@@ -1,0 +1,54 @@
+.input-number {
+    width: 30px;
+    display: flex;
+    margin: 0 20px 0 0;
+    align-content: center;
+    justify-content: space-between;
+    outline: 1px black solid;
+    flex-direction: column;
+}
+.input-number > * {
+    margin: 0;
+    border: 0;
+    padding: 5px;
+    height: inherit;
+}
+.input-number button {
+    width: 30px;
+    height:20px;
+    color: #333;
+    cursor: pointer;
+    border-width: 1px;
+    background: #eee;
+}
+.input-number button:hover {
+    color: black;
+    background: white;
+}
+.input-number button:active {
+    color: white;
+    background: #138496;
+}
+.input-number button:focus, .input-number input:focus {
+    border: none;
+    box-shadow: none;
+    outline: none !important;
+}
+.input-number input {
+    border: 0;
+    padding: 0;
+    width: 30px;
+    margin: 0 2px;
+    font-size: 12px;
+    text-align: center;
+    height: 25px;
+   /* Chrome, Safari, Edge, Opera */
+   /* Firefox */
+}
+.input-number input::-webkit-outer-spin-button, .input-number input::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+.input-number input[type="number"] {
+    -moz-appearance: textfield;
+}
