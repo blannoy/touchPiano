@@ -2,29 +2,15 @@ import json
 import pprint
 import sseclient
 import requests
+import re
+from pypiano import Piano
+from threading import Thread
 
-from mingus.core import notes, chords
-from mingus.containers import *
-from mingus.midi import fluidsynth
-from os import sys
-
-SF2 = "soundfonts\\FluidR3_GM.sf2"
-WHITE_KEYS = [
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "A",
-    "B",
-]
-BLACK_KEYS = ["C#", "D#", "F#", "G#", "A#"]
-channel = 8
-
-if not fluidsynth.init(SF2):
-    print("Couldn't load soundfont", SF2)
-    sys.exit(1)
-
+def playNote(key):
+    p.play(pianoNotes[key])
+    
+p = Piano(audio_driver="alsa")
+pianoNotes=['C-4','C#-4','D-4','D#-4','E-4']
 baseUrl='http://192.168.0.38'
 pîanoEventsUrl = baseUrl+'/api/piano'
 pianoControl=baseUrl+'/api/pianoState?mode=piano&start='
@@ -43,8 +29,15 @@ client = sseclient.SSEClient(response)
 try:  
     print("Ctrl-C to stop")  
     for event in client.events():
-        pprint.pprint(json.loads(event.data))
-        fluidsynth.play_Note(Note("C-5"), channel, 100)
+        eventData=json.loads(event.data)
+        keyHit=eventData["keyHit"]
+        for i in range(len(keyHit)):
+            if (keyHit[i]==True):
+                print ("Hit ",i)
+                
+#        pprint.pprint(j)
+#        thread = Thread(target=playNote, args=(2,))
+#        thread.start()
 except KeyboardInterrupt:
     client.close()
     stopPiano=requests.get(pianoControl+"false")

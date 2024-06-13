@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.2",
     "env-cmd": "^10.1.0",
     "node-sass": "^7.0.3",
     "react": "^18.2.0",
@@ -31,7 +32,7 @@
     "start:production": "env-cmd -f .env.prod react-scripts start",
     "build": "scripts\\build.cmd dev",
     "build:production": "scripts\\build.cmd prod",
-    "build:local": "scripts\\build.cmd local",
+    "build:local": "env-cmd -f .env.local react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
