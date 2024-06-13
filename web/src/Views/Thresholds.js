@@ -193,14 +193,14 @@ function Thresholds() {
                   activeDot={{ r: 5 }}
                   strokeWidth="2"
                 />
-                <Line
+{/*                 <Line
                   type="monotone"
                   dataKey={getFiltered}
                   stroke="#00FF00"
                   dot={false}
                   activeDot={{ r: 5 }}
                   strokeWidth="2"
-                />
+                /> */}
                 <Line
                   type="monotone"
                   dataKey={getTouchLimit}
