@@ -25,7 +25,7 @@ void wifiManagerSetup()
   // wifiManager.resetSettings();
 
   bool res;
-  res = wifiManager.autoConnect("mpr121_calib-AP");
+  res = wifiManager.autoConnect(ssid);
   if (!res)
   {
     Serial.println("Failed to connect");

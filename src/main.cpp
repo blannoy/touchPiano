@@ -5,7 +5,7 @@
 // #include <ESP8266WebServer.h>
 // #include <ESP8266WiFi.h>
 // #define WIFIAP
-const char *ssid = "MPR121_Calib";
+const char *ssid = "touchPiano-AP";
 #define NUMREADINGS 10
 #include <headers.h>
 #include <configuration.h>
@@ -192,6 +192,8 @@ void sensorLoop()
     if (sendPianoEvent)
     {
       pianoEvents.send(message.c_str(), "message", millis());
+      // empty event for python sse-client to fire
+         pianoEvents.send("{}", "message", millis());
       if (sendHit)
       {
         Serial.print("pianoHit:");
