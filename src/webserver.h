@@ -221,7 +221,15 @@ void setThresholds(AsyncWebServerRequest *request, JsonObject data)
   copyArray(data["customReleaseThreshold"], config.customReleaseThreshold);
   getConfig(request);
 }
-
+void setAutoRelease(AsyncWebServerRequest *request)
+{
+  if (request->hasParam("value"))
+  {
+    AsyncWebParameter *p = request->getParam("value");
+    config.autoRelease=p->value().toInt();
+  }
+  getConfig(request);
+}
 void webServerSetup()
 {
   Serial.println("Webserver setup");
@@ -238,6 +246,7 @@ void webServerSetup()
     server.on("/api/pianoState", HTTP_GET, setState);
     server.on("/api/wifiMode", HTTP_GET, setWifiMode);
     server.on("/api/thresholdMode", HTTP_GET, setThresholdMode);
+    server.on("/api/autoRelease", HTTP_GET, setAutoRelease);
     server.addHandler(new AsyncCallbackJsonWebHandler(
         "/api/setReg",
         [](AsyncWebServerRequest *request, JsonVariant &json)
