@@ -3,40 +3,52 @@ import asyncio
 import json
 import requests
 import pprint
+from pypiano import Piano
+from threading import Thread
 
 baseUrl='http://192.168.0.38'
 pianoEventsUrl = baseUrl+'/api/piano'
 pianoControl=baseUrl+'/api/pianoState?mode=piano&start='
+pianoNotes=[
+  'C-4', 'C#-4', 'D-4', 'D#-4', 'E-4', 'F-4', 'F#-4', 'G-4', 'G#-4', 'A-4', 'A#-4', 'B-4',
+  'C-5', 'C#-5', 'D-5', 'D#-5', 'E-5', 'F-5', 'F#-5', 'G-5', 'G#-5', 'A-5', 'A#-5', 'B-5'
+];
+p = Piano(audio_driver="alsa")
 
-
+def playNote(key):
+    p.play(pianoNotes[key])
+    
 async def treatEvents():
     print("using ",pianoEventsUrl)
     event_source = sse_client.EventSource(pianoEventsUrl)
     async with event_source:
         try:
             async for event in event_source:
-                pprint.pprint(json.loads(event.data))
+                eventData=json.loads(event.data)
+                keyHit=eventData["keyHit"]
+                for i in range(len(keyHit)):
+                #print("Hit ",i," ",keyHit[i])
+                    if (keyHit[i]==True):
+                        print("Hit ",i," ",keyHit[i])
+                        thread = Thread(target=playNote, args=(i,))
+                        thread.start()
         except ConnectionError:
             print("Connection error");
         except KeyboardInterrupt:
+            stopPiano=requests.get(pianoControl+"false")
+            if (pianoResponse["start"] == False):
+                print("Piano stopped")
             await event_source.close()
 
-async def main():
-    startPiano=requests.get(pianoControl+"true")
-    pianoResponse=json.loads(startPiano.content)
-    if (pianoResponse["start"] == True):
-        print("Piano started")
-    else:
-        print("Cannot start piano")
-        exit()  
-    key=input("Enter to stop")
-    stopPiano=requests.get(pianoControl+"false")
-    if (pianoResponse["start"] == False):
-        print("Piano stopped")
 
-    return "Done"
-loop=asyncio.new_event_loop();
-loop.run_until_complete(main())
-task=loop.create_task(treatEvents())
+startPiano=requests.get(pianoControl+"true")
+pianoResponse=json.loads(startPiano.content)
+if (pianoResponse["start"] == True):
+    print("Piano started")
+else:
+    print("Cannot start piano")
+    exit()  
+asyncio.run(treatEvents())
+
 # task.cancel()
 # loop.close()
