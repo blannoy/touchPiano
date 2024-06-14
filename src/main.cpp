@@ -193,7 +193,7 @@ void sensorLoop()
     {
       pianoEvents.send(message.c_str(), "message", millis());
       // empty event for python sse-client to fire
-         pianoEvents.send("{}", "message", millis());
+      //   pianoEvents.send("", "message", millis());
       if (sendHit)
       {
         Serial.print("pianoHit:");

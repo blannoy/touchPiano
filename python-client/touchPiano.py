@@ -4,22 +4,20 @@ import json
 import requests
 import pprint
 
-loop = asyncio.new_event_loop()
-
 baseUrl='http://192.168.0.38'
-pîanoEventsUrl = baseUrl+'/api/piano'
+pianoEventsUrl = baseUrl+'/api/piano'
 pianoControl=baseUrl+'/api/pianoState?mode=piano&start='
 
 
-
 async def treatEvents():
-    event_source = sse_client.EventSource(pîanoEventsUrl)
+    print("using ",pianoEventsUrl)
+    event_source = sse_client.EventSource(pianoEventsUrl)
     async with event_source:
         try:
             async for event in event_source:
                 pprint.pprint(json.loads(event.data))
         except ConnectionError:
-            pass
+            print("Connection error");
         except KeyboardInterrupt:
             await event_source.close()
 
@@ -37,8 +35,8 @@ async def main():
         print("Piano stopped")
 
     return "Done"
-
-task=loop.create_task(treatEvents())
+loop=asyncio.new_event_loop();
 loop.run_until_complete(main())
-task.cancel()
-loop.close()
+task=loop.create_task(treatEvents())
+# task.cancel()
+# loop.close()
