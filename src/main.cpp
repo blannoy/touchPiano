@@ -53,6 +53,7 @@ uint16_t avgCurrTouched[NUMSENSORS];
 uint16_t avgLastTouched[NUMSENSORS];
 RunningAverage averagedData[NUMSENSORS][NUMKEYS / 2];
 uint16_t thresholdCrossed[NUMSENSORS][NUMKEYS / 2];
+long autoReleaseTimer[NUMKEYS];
 
 uint8_t sensorAddress[] = {0x5A, 0x5B};
 
@@ -107,6 +108,7 @@ void sensorLoop()
       {
         bitSet(avgCurrTouched[sensorNr], i);
         thresholdCrossed[sensorNr][i] = value + (currentAvg - value) * 0.85;
+        autoReleaseTimer[sensorNr] = millis();
       }
       //      else if (((value - currentAvg) > config.customReleaseThreshold[i]) && (avgCurrTouched[sensorNr] & _BV(i)))
       else if (avgCurrTouched[sensorNr] & _BV(i))
@@ -127,6 +129,11 @@ void sensorLoop()
           break;
         default:
           break;
+        }
+        // autorelease after autorelease timer
+        if ((millis() - autoReleaseTimer[sensorNr]) > config.autoRelease)
+        {
+          bitClear(avgCurrTouched[sensorNr], i);
         }
       }
 
@@ -157,7 +164,8 @@ void sensorLoop()
         if (isHit)
           sendHit = true;
       }
-        if (keyState[keyNr]>0) keepHit=true;
+      if (keyState[keyNr] > 0)
+        keepHit = true;
     }
     if (keepHit)
     {
@@ -261,7 +269,7 @@ void loop()
       avgCurrTouched[sensorNr] = 0;
     }
     sensorStarted = false;
-          digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(LED_BUILTIN, HIGH);
     Serial.printf("Stopped in mode %s\n", runMode);
   }
 

@@ -38,6 +38,11 @@ export function requestReducer(state, action) {
             targetState.method = 'get';
             targetState.params = action.params;
             break;
+            case 'AUTORELEASE':
+                targetState.url = '/autoRelease';
+                targetState.method = 'get';
+                targetState.params = action.params;
+                break;
         default:
             break;
     }

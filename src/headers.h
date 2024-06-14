@@ -29,6 +29,7 @@ struct Configuration
     byte MHD[2], NHD[2], NCL[2], FDL[2];
     WifiMode wifiMode;
     ThresholdMode thresholdMode=CROSS;
+    int autoRelease=15000;
     char apPW[MAXPWSIZE]="calibMpr121";
 };
 

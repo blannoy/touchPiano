@@ -35,6 +35,7 @@ JsonDocument config2JSON(Configuration *conf)
   copyArray(config.customReleaseThreshold, doc["customReleaseThreshold"]);
   doc["wifiMode"] = wifiModeString[config.wifiMode];
   doc["thresholdMode"] = thresholdModeString[config.thresholdMode];
+  doc["autoRelease"]=config.autoRelease;
   return doc;
 }
 void saveConfiguration(Configuration &conf)
@@ -105,6 +106,10 @@ bool JSON2config(const JsonDocument doc, Configuration *conf, boolean save)
       {
         config.thresholdMode = CROSS;
       }
+    }
+    if (doc.containsKey("autoRelease"))
+    {
+      config.autoRelease=doc["autoRelease"].as<int>();
     }
   }
   else

@@ -11,9 +11,12 @@ export default function Admin() {
   const [apPW, setApPW] = useState(undefined);
   const navigate = useNavigate();
   const [waitReboot,setWaitReboot]=useState(false);
+  const [autoReleaseTiming,setAutoReleaseTiming]=useState(60000);
+
   useEffect(() => {
     if (config !== null && config !== undefined) {
       setWifiMode(config.wifiMode);
+      setAutoReleaseTiming(config.autoRelease);
     }
   }, [config])
   function goHome(){ 
@@ -57,6 +60,14 @@ goHome();
   function changeThresholdMode(e) {
     setThreshMode(e.target.value);
   }
+  function changeAutoRelease(e) {
+    setAutoReleaseTiming(e.target.value);
+  }
+
+  function sendAutoRelease(e){
+    dispatchRequest({ type: 'AUTORELEASE', params: { 'value': autoReleaseTiming} });
+  }
+
   return (
     <div>
       <div className='section'>
@@ -66,6 +77,11 @@ goHome();
         </select>
 
         <button type="submit" id="setthresholdmode" onClick={setThresholdMode}>Set threshold mode</button>
+      </div>
+      <div className='section'>
+        <label>Autorelease key after (in ms)</label>
+        <input type="number" min="0" max="60000" id="autoRelease" value={autoReleaseTiming} onChange={changeAutoRelease}></input>
+        <button type="submit" id="setautorelease" onClick={sendAutoRelease}>Set autorelease timing</button>
       </div>
       <div className='section'>
         Device will reboot after change in wifi settings.
