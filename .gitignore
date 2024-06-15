@@ -29,5 +29,5 @@ web/coverage
 # production
 web/build
 web/dist
-data/*.*
+data/
 *.sf2
