@@ -3,7 +3,6 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
-data/
 *.m4a
 *.ogg
 # misc
@@ -26,5 +25,5 @@ web/coverage
 # production
 web/build
 web/dist
-./data/**
+data/**
 *.sf2
