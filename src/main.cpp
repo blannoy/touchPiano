@@ -6,7 +6,7 @@
 // #include <ESP8266WiFi.h>
 // #define WIFIAP
 const char *ssid = "touchPiano-AP";
-#define NUMREADINGS 10
+#define MAXREADINGS 20
 #include <headers.h>
 #include <configuration.h>
 #ifdef ESP32
@@ -51,7 +51,7 @@ uint16_t lastTouched[NUMSENSORS];
 uint16_t currTouched[NUMSENSORS];
 uint16_t avgCurrTouched[NUMSENSORS];
 uint16_t avgLastTouched[NUMSENSORS];
-RunningAverage averagedData[NUMSENSORS][NUMKEYS / 2];
+RunningAverage averagedData[NUMKEYS];
 uint16_t thresholdCrossed[NUMSENSORS][NUMKEYS / 2];
 long autoReleaseTimer[NUMKEYS];
 
@@ -103,7 +103,7 @@ void sensorLoop()
     {
       int keyNr = sensorNr * (NUMKEYS / NUMSENSORS) + i;
       long value = cap[sensorNr].filteredData(i);
-      long currentAvg = averagedData[sensorNr][i].getAverage(value);
+      long currentAvg = averagedData[keyNr].getAverage(value);
       if (((currentAvg - value) > config.customTouchThreshold[keyNr]) && !(avgCurrTouched[sensorNr] & _BV(i)))
       {
         bitSet(avgCurrTouched[sensorNr], i);
@@ -141,14 +141,14 @@ void sensorLoop()
       {
         filteredDataArray[keyNr] = value;
         baselineDataArray[keyNr] = cap[sensorNr].baselineData(i);
-        keyState[keyNr] = currTouched[sensorNr] & _BV(i);
+        keyState[keyNr] = (currTouched[sensorNr] & _BV(i))>0;
       }
       else if (runMode == "thresholds")
       {
         averagedDataArray[keyNr] = value;
         filteredDataArray[keyNr] = currentAvg;
         releaseDataArray[keyNr] = thresholdCrossed[sensorNr][i] - config.customReleaseThreshold[keyNr];
-        keyState[keyNr] = bitRead(avgCurrTouched[sensorNr], i);
+        keyState[keyNr] = (bitRead(avgCurrTouched[sensorNr], i)>0);
         keyHit[keyNr] = (avgCurrTouched[sensorNr] & _BV(i)) && !(avgLastTouched[sensorNr] & _BV(i));
         //       doc["filteredData_" + String(i)] = value;
         // doc["averagedData_" + String(i)] = currentAvg;
@@ -158,7 +158,7 @@ void sensorLoop()
       }
       else if (runMode == "piano")
       {
-        keyState[keyNr] = bitRead(avgCurrTouched[sensorNr], i);
+        keyState[keyNr] = (bitRead(avgCurrTouched[sensorNr], i)>0);
         bool isHit = ((avgCurrTouched[sensorNr] & _BV(i)) && !(avgLastTouched[sensorNr] & _BV(i)));
         keyHit[keyNr] = isHit;
         if (isHit)
@@ -253,7 +253,9 @@ void loop()
       cap[sensorNr].writeRegister(MPR121_NHDF, config.NHD[0]);
       cap[sensorNr].writeRegister(MPR121_NCLF, config.NCL[0]);
       cap[sensorNr].writeRegister(MPR121_FDLF, config.FDL[0]);
-
+  for (int iLoop=0;iLoop<NUMKEYS;iLoop++){
+    averagedData[iLoop].numReadings=config.averagePeriod;
+  }
       cap[sensorNr].writeRegister(MPR121_ECR, ECR_Reg); // exit stop mode
     }
     startTime = millis();

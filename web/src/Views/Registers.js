@@ -13,7 +13,7 @@ import {
   XAxis,
 } from "recharts";
 
-function Calibrate() {
+function Registers() {
   const [config, setConfig] = useContext(configContext);
   const [requestState, dispatchRequest] = useContext(queryProviderContext);
   const [start, setStart] = useState(false);
@@ -32,7 +32,7 @@ function Calibrate() {
   const [NCL, setNCL] = useState([0, 0]);
   const [FDL, setFDL] = useState([0, 0]);
   const [plotData, setPlotData] = useState([]);
-  const [selectedPin, setSelectedPin] = useState(2);
+  const [selectedPin, setSelectedPin] = useState(0);
   const data = useRef([]);
   const eventSource = useRef(undefined);
   const numPoints = 256;
@@ -547,4 +547,4 @@ function Calibrate() {
   );
 }
 
-export default Calibrate;
+export default Registers;

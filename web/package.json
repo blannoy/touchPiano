@@ -7,6 +7,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.2",
+    "copy-files-from-to": "^3.11.0",
     "env-cmd": "^10.1.0",
     "node-sass": "^7.0.3",
     "react": "^18.2.0",
@@ -27,15 +28,39 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "env-cmd -f .env.dev react-scripts start",
-    "start:acc": "env-cmd -f .env.acc react-scripts start",
-    "start:production": "env-cmd -f .env.prod react-scripts start",
-    "build": "scripts\\build.cmd dev",
-    "build:production": "scripts\\build.cmd prod",
-    "build:local": "scripts\\build.cmd local",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "env-cmd -f .env.acc react-scripts start",
+    "image": "env-cmd -f .env.image react-scripts build",
+    "build": "env-cmd -f .env.local react-scripts build",
+    "postbuild": "copy-files-from-to --mode=local",
+    "postimage": "copy-files-from-to --mode=image"
   },
+  "copyFiles": [
+    {
+        "from": "../config/config.json",
+        "to": {
+                "default": {
+                    "skip": true
+                },
+          "image": "../data/"
+      }
+    },
+    {
+      "from": {
+          "default": {
+              "skip": true
+          },
+          "start": "../sounds/**",
+          "local": "../sounds/**"
+      },
+      "to": {
+        "default": {
+          "skip": true
+      },
+        "start": "build/sounds/",
+        "local": "dist/sounds/"
+      }
+  }
+],
   "eslintConfig": {
     "extends": [
       "react-app",

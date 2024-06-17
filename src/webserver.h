@@ -137,6 +137,11 @@ void getConfig(AsyncWebServerRequest *request)
   sendResponse(200, "application/json", message.c_str(), request);
 }
 
+void saveAndGetConfig(AsyncWebServerRequest *request){
+  saveConfiguration(config);
+  getConfig(request);
+}
+
 void setConfig(AsyncWebServerRequest *request, JsonObject data)
 {
   if (request->hasParam("start"))
@@ -197,8 +202,7 @@ void setState(AsyncWebServerRequest *request)
     AsyncWebParameter *p = request->getParam("start");
     startSensor = p->value().equalsIgnoreCase("true");
   }
-
-  getConfig(request);
+  saveAndGetConfig(request);
 }
 
 void setThresholdMode(AsyncWebServerRequest *request)
@@ -213,13 +217,13 @@ void setThresholdMode(AsyncWebServerRequest *request)
       config.thresholdMode = CROSS;
     }
   }
-  getConfig(request);
+  saveAndGetConfig(request);
 }
 void setThresholds(AsyncWebServerRequest *request, JsonObject data)
 {
   copyArray(data["customTouchThreshold"], config.customTouchThreshold);
   copyArray(data["customReleaseThreshold"], config.customReleaseThreshold);
-  getConfig(request);
+  saveAndGetConfig(request);
 }
 void setAutoRelease(AsyncWebServerRequest *request)
 {
@@ -228,7 +232,16 @@ void setAutoRelease(AsyncWebServerRequest *request)
     AsyncWebParameter *p = request->getParam("value");
     config.autoRelease=p->value().toInt();
   }
-  getConfig(request);
+  saveAndGetConfig(request);
+}
+void setAveragePeriod(AsyncWebServerRequest *request)
+{
+  if (request->hasParam("value"))
+  {
+    AsyncWebParameter *p = request->getParam("value");
+    config.averagePeriod=min(MAXREADINGS,(int)p->value().toInt());
+  }
+  saveAndGetConfig(request);
 }
 void webServerSetup()
 {
@@ -247,6 +260,7 @@ void webServerSetup()
     server.on("/api/wifiMode", HTTP_GET, setWifiMode);
     server.on("/api/thresholdMode", HTTP_GET, setThresholdMode);
     server.on("/api/autoRelease", HTTP_GET, setAutoRelease);
+    server.on("/api/averagePeriod", HTTP_GET, setAveragePeriod);
     server.addHandler(new AsyncCallbackJsonWebHandler(
         "/api/setReg",
         [](AsyncWebServerRequest *request, JsonVariant &json)

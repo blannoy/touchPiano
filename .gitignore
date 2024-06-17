@@ -26,3 +26,11 @@ web/coverage
 web/build
 web/dist
 *.sf2
+sounds/**
+data/static
+data/*.json
+data/*.png
+data/*.html
+data/*.ico
+data/*.txt
+

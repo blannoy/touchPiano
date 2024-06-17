@@ -20,7 +20,7 @@ function Thresholds() {
   const [start, setStart] = useState(false);
   const [plotData, setPlotData] = useState([]);
   const [pausedPlotData, setPausedPlotData] = useState([]);
-  const [selectedPin, setSelectedPin] = useState(2);
+  const [selectedPin, setSelectedPin] = useState(0);
   const [touchAll, setTouchAll] = useState(25);
   const [releaseAll, setReleaseAll] = useState(12);
   const [touchThreshold, setTouchThreshold] = useState([]);

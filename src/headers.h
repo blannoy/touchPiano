@@ -30,6 +30,7 @@ struct Configuration
     WifiMode wifiMode;
     ThresholdMode thresholdMode=CROSS;
     int autoRelease=15000;
+    int averagePeriod=5;
     char apPW[MAXPWSIZE]="calibMpr121";
 };
 

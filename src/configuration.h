@@ -36,6 +36,7 @@ JsonDocument config2JSON(Configuration *conf)
   doc["wifiMode"] = wifiModeString[config.wifiMode];
   doc["thresholdMode"] = thresholdModeString[config.thresholdMode];
   doc["autoRelease"]=config.autoRelease;
+  doc["averagePeriod"]=config.averagePeriod;
   return doc;
 }
 void saveConfiguration(Configuration &conf)
@@ -110,6 +111,10 @@ bool JSON2config(const JsonDocument doc, Configuration *conf, boolean save)
     if (doc.containsKey("autoRelease"))
     {
       config.autoRelease=doc["autoRelease"].as<int>();
+    }
+        if (doc.containsKey("averagePeriod"))
+    {
+      config.averagePeriod=doc["averagePeriod"].as<int>();
     }
   }
   else
