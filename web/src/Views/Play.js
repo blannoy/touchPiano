@@ -28,7 +28,7 @@ function Play() {
   const [instrumentList, setInstrumentList] = useState([]);
 
   const getSoundConfig = () => {
-    fetch('sounds.json'
+    fetch('instruments/instruments.json'
       , {
         headers: {
           'Content-Type': 'application/json',

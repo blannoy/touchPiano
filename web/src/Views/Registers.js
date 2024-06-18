@@ -162,12 +162,39 @@ function Registers() {
   function togglePause(e){
     setPauseChart(!pauseChart);
    }
+   function pushConfig(e){
+    let params = {
+      ...config,
+      CDT: CDT,
+      CDC: CDC,
+      FFI: FFI,
+      SFI: SFI,
+      touchThreshold: touchThreshold,
+      touchDebounce: touchDebounce,
+      releaseThreshold: releaseThreshold,
+      releaseDebounce: releaseDebounce,
+      Rising: {
+        MHD: MHD[0],
+        NHD: NHD[0],
+        NCL: NCL[0],
+        FDL: FDL[0]
+      },
+      Falling: {
+        MHD: MHD[1],
+        NHD: NHD[1],
+        NCL: NCL[1],
+        FDL: FDL[1]
+      }
+    };
+    dispatchRequest({ type: 'SETCONFIG', method: 'post', body: { ...params }});
+   }
 
   return (
     <div>
       <form>
         <div className='section'>
           <input type="hidden" id="start" value="true" />
+          <button type="submit" id="start" onClick={pushConfig}>SET</button>
           <button type="submit" id="start" onClick={doSubmit}>{(start ? "STOP" : "START")}</button>
           <select id="pin" name="pin" onChange={changePin} value={selectedPin}>
             {Array.from({ length: nrKeys}).map((it, index) => <option key={index} value={index}>Pin {index}</option>)}

@@ -3,13 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.2",
     "copy-files-from-to": "^3.11.0",
     "env-cmd": "^10.1.0",
-    "node-sass": "^7.0.3",
     "react": "^18.2.0",
     "react-data-table-component": "^7.6.2",
     "react-dom": "^18.2.0",
@@ -21,14 +17,12 @@
     "react-slider": "^2.0.6",
     "react-use-scroll-direction": "^0.1.0",
     "recharts": "^2.12.4",
-    "sass": "^1.76.0",
-    "sass-loader": "^14.2.1",
     "smplr": "^0.14.0",
-    "standardized-audio-context": "^25.3.72",
-    "web-vitals": "^2.1.4"
+    "standardized-audio-context": "^25.3.72"
   },
   "scripts": {
-    "start": "env-cmd -f .env.acc react-scripts start",
+    "prestart": "copy-files-from-to --mode=start",
+    "start": "env-cmd -f .env.start react-scripts start",
     "image": "env-cmd -f .env.image react-scripts build",
     "build": "env-cmd -f .env.local react-scripts build",
     "postbuild": "copy-files-from-to --mode=local",
@@ -36,31 +30,39 @@
   },
   "copyFiles": [
     {
-        "from": "../config/config.json",
-        "to": {
-                "default": {
-                    "skip": true
-                },
-          "image": "../data/"
+      "from": "../config/config.json",
+      "to": {
+        "default": {
+          "skip": true
+        },
+        "image": "../data/"
+      }
+    },
+    {
+      "from": "../instruments/instruments.json",
+      "to": {
+        "default": {
+          "skip": true
+        },
+        "image": "../data/instruments/",
+        "start": "public/instruments/"
       }
     },
     {
       "from": {
-          "default": {
-              "skip": true
-          },
-          "start": "../sounds/**",
-          "local": "../sounds/**"
+        "default": {
+          "skip": true
+        },
+        "local": "../instruments/**"
       },
       "to": {
         "default": {
           "skip": true
-      },
-        "start": "build/sounds/",
-        "local": "dist/sounds/"
+        },
+        "local": "build/instruments/"
       }
-  }
-],
+    }
+  ],
   "eslintConfig": {
     "extends": [
       "react-app",

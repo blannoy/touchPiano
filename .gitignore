@@ -26,7 +26,7 @@ web/coverage
 web/build
 web/dist
 *.sf2
-sounds/**
+instruments/*.js
 data/static
 data/*.json
 data/*.png
