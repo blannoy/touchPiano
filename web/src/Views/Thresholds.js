@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { configContext, queryProviderContext } from "../Context/Context";
 import { nrKeys } from '../Containers/Root.js';
-import InputNumber from '../Components/InputNumber.tsx';
+import InputNumber from '../Components/InputNumber.js';
 
 import {
   LineChart,
