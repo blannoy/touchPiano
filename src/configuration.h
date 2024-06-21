@@ -54,7 +54,6 @@ bool JSON2config(const JsonDocument doc, Configuration *conf, boolean save)
 {
 
   bool validJSON = true;
-  // debug_println(json[F("system")][F("ntp_server")].as<String>());
   for (uint8_t i = 0; i < NUMCONFKEYS; i++)
   {
     if (!doc.containsKey(configKeys[i]))
@@ -150,8 +149,6 @@ void loadConfiguration(Configuration *conf)
     configFile.close();
     if (!deserializeError)
     {
-      // serializeJson(json,Serial);
-      // serializeJsonPretty(json, Serial);
       validJSON = true;
       JSON2config(json, conf, false);
       if (json.containsKey("APPW"))
@@ -177,10 +174,8 @@ void loadConfiguration(Configuration *conf)
   {
     debug_println(F("Invalid JSON"));
     Serial.println(F("Invalid JSON"));
-    // loadDefaultConfiguration();
   }
 
-  // copyConfig(config, oldConfig);
 }
 
 void configurationSetup()

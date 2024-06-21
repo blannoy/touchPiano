@@ -7,7 +7,6 @@ AsyncEventSource pianoEvents("/api/piano");
 void sendResponse(int code, const char *content_type, const char *message, AsyncWebServerRequest *request)
 {
   AsyncWebServerResponse *response = request->beginResponse(code, content_type, message);
-  // response->addHeader("Access-Control-Allow-Origin", "*");
   response->addHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS");
   response->addHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With");
   request->send(response);
@@ -46,24 +45,15 @@ String webserverGetContentType(String filename)
 void sendOptions(AsyncWebServerRequest *request)
 {
   AsyncWebServerResponse *response = request->beginResponse(204);
-  // response->addHeader("Access-Control-Max-Age", "10000");
-  // response->addHeader("Access-Control-Allow-Methods", "PUT, POST, GET, OPTIONS");
-  // response->addHeader("Access-Control-Allow-Headers", "*");
   request->send(response);
 }
 bool webserverServeFileFromFS(AsyncWebServerRequest *request)
 {
   String path = request->url();
-  // debug_printf("handleFileRead: %s (%d)\n", path.c_str(), path.length());
   Serial.printf("handleFileRead: %s (%d) method %s\n", path.c_str(), path.length(), request->methodToString());
   if (strcmp(request->methodToString(), "OPTIONS") == 0)
   {
     sendOptions(request);
-    // AsyncWebServerResponse *response = request->beginResponse(204);
-    // // response->addHeader("Access-Control-Max-Age", "10000");
-    // // response->addHeader("Access-Control-Allow-Methods", "PUT, POST, GET, OPTIONS");
-    // // response->addHeader("Access-Control-Allow-Headers", "*");
-    // request->send(response);
     return true;
   }
   else
@@ -79,16 +69,10 @@ bool webserverServeFileFromFS(AsyncWebServerRequest *request)
     {
       if (LittleFS.exists(compressed_path))
         path += ".gz";
-      //    File file = LittleFS.open(path, "r");
       AsyncWebServerResponse *response = request->beginResponse(LittleFS, path.c_str(), content_type);
       request->send(response);
-      //    file.close();
-      //  debug_printf("sent file: %s with size %d\n", path.c_str(), sent);
-      //  debug_print("\tSent file:");
-      //  debug_println(path);
       return true;
     }
-    // debug_printf("\tFile Not Found: %s\n", path.c_str());
     return false;
   }
 }
@@ -123,7 +107,6 @@ void dumpLittleFS()
   while (dir.next())
   {
     Serial.printf("%s, (%d)\n", dir.fileName().c_str(), dir.fileSize());
-    //  debug_printf("%s, (%d)\n", dir.fileName().c_str(), dir.fileSize());
   }
 }
 
@@ -248,9 +231,6 @@ void webServerSetup()
   Serial.println("Webserver setup");
   if (!serverStarted)
   {
-    // dumpLittleFS();
-    // server.on("/", handleRoot);
-    // server.enableCORS(true);
     server.serveStatic("/", LittleFS, "/");
     server.serveStatic("/static/css", LittleFS, "/static/css");
     server.serveStatic("/static/js", LittleFS, "/static/js");
@@ -303,7 +283,6 @@ void webServerSetup()
                                   {
                                     Serial.printf("Client reconnected to calibration! Last message ID that it got is: %u\n", client->lastId());
                                   }
-                                  // client->send("hello!", NULL, millis(), 1000); });
                                 });
     pianoEvents.onConnect([](AsyncEventSourceClient *client)
                           {
@@ -311,7 +290,6 @@ void webServerSetup()
                             {
                               Serial.printf("Client reconnected to piano! Last message ID that it got is: %u\n", client->lastId());
                             }
-                            // client->send("hello!", NULL, millis(), 1000); });
                           });
     thresholdEvents.onConnect([](AsyncEventSourceClient *client)
                               {
@@ -319,7 +297,6 @@ void webServerSetup()
                                 {
                                   Serial.printf("Client reconnected to threshold! Last message ID that it got is: %u\n", client->lastId());
                                 }
-                                // client->send("hello!", NULL, millis(), 1000); });
                               });
 
     server.addHandler(&calibrationEvents);
@@ -332,7 +309,6 @@ void webServerSetup()
     DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers", "*");
     DefaultHeaders::Instance().addHeader("Access-Control-Request-Private-Network", "true");
     server.begin();
-    // Serial.println("HTTP server started\n");
     serverStarted = true;
   }
 }
@@ -341,18 +317,12 @@ void stopServer()
 {
   server.end();
 }
-/*
-void getLog(){
-  flushLog();
-  String message(logBufferString);
-  server.send(200,"text/plain",message);
-}*/
+
 
 void webServerLoop()
 {
   if (serverStarted)
   {
-    //  server.handleClient();
     MDNS.update();
   }
 }
