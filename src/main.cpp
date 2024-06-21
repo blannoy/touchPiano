@@ -38,10 +38,6 @@ void stopServer();
 #include "webserver.h"
 #define filesystem (LittleFS)
 
-#ifndef _BV
-#define _BV(bit) (1 << (bit))
-#endif
-
 // You can have up to 4 on one i2c bus but one is enough for testing!
 Adafruit_MPR121 cap[NUMSENSORS];
 
@@ -104,14 +100,14 @@ void sensorLoop()
       int keyNr = sensorNr * (NUMKEYS / NUMSENSORS) + i;
       long value = cap[sensorNr].filteredData(i);
       long currentAvg = averagedData[keyNr].getAverage(value);
-      if (((currentAvg - value) > config.customTouchThreshold[keyNr]) && !(avgCurrTouched[sensorNr] & _BV(i)))
+      if (((currentAvg - value) > config.customTouchThreshold[keyNr]) && !(bitRead(avgCurrTouched[sensorNr],i)>0))
       {
         bitSet(avgCurrTouched[sensorNr], i);
         thresholdCrossed[sensorNr][i] = value + (currentAvg - value) * 0.85;
         autoReleaseTimer[sensorNr] = millis();
       }
       //      else if (((value - currentAvg) > config.customReleaseThreshold[i]) && (avgCurrTouched[sensorNr] & _BV(i)))
-      else if (avgCurrTouched[sensorNr] & _BV(i))
+      else if (bitRead(avgCurrTouched[sensorNr],i)>0)
       {
         switch (config.thresholdMode)
         {
@@ -141,7 +137,7 @@ void sensorLoop()
       {
         filteredDataArray[keyNr] = value;
         baselineDataArray[keyNr] = cap[sensorNr].baselineData(i);
-        keyState[keyNr] = (currTouched[sensorNr] & _BV(i))>0;
+        keyState[keyNr] = (bitRead(currTouched[sensorNr],i)>0);
       }
       else if (runMode == "thresholds")
       {
@@ -149,7 +145,7 @@ void sensorLoop()
         filteredDataArray[keyNr] = currentAvg;
         releaseDataArray[keyNr] = thresholdCrossed[sensorNr][i] - config.customReleaseThreshold[keyNr];
         keyState[keyNr] = (bitRead(avgCurrTouched[sensorNr], i)>0);
-        keyHit[keyNr] = (avgCurrTouched[sensorNr] & _BV(i)) && !(avgLastTouched[sensorNr] & _BV(i));
+        keyHit[keyNr] = (bitRead(avgCurrTouched[sensorNr] ,i)>0) && !(bitRead(avgLastTouched[sensorNr],i)>0);
         //       doc["filteredData_" + String(i)] = value;
         // doc["averagedData_" + String(i)] = currentAvg;
         //       doc["touchLimit_" + String(i)] = value-config.customTouchThreshold[i];
@@ -159,7 +155,7 @@ void sensorLoop()
       else if (runMode == "piano")
       {
         keyState[keyNr] = (bitRead(avgCurrTouched[sensorNr], i)>0);
-        bool isHit = ((avgCurrTouched[sensorNr] & _BV(i)) && !(avgLastTouched[sensorNr] & _BV(i)));
+        bool isHit = ( (bitRead(avgCurrTouched[sensorNr] ,i)>0) && !(bitRead(avgLastTouched[sensorNr],i)>0));
         keyHit[keyNr] = isHit;
         if (isHit)
           sendHit = true;
