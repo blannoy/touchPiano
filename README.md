@@ -7,7 +7,8 @@ This project contains the source code to drive a MPR121 & Nodemcu based "floor p
 ### Electronics
 - NodeMCU ESP8266
 - 2x [Adafruit MPR121](https://www.adafruit.com/product/1982) -> 12 pins each = 24 keys
-The system is powered via NodeMCU USB port. The setup was put together on a prototype board. 
+The system is powered via NodeMCU USB port. The setup was put together on a prototype board.
+
 ![20240620_102826](https://github.com/blannoy/touchPiano/assets/23641978/146d309c-799d-4185-aaf8-1bae7186ca21)
 
 
@@ -18,6 +19,7 @@ The piano was built using aluminium foil glued to cardboard and covered with a s
 A piece of [copper tape with conductive adhesive](https://www.adafruit.com/product/3483) was fixed on the foil. This makes it easy to solder a wire to the foil.
 Do this for each piece of the piano (e.g. 24 keys) or other layout you wish to use.
 Each wire needs to be connected to a pin of the MPR121.
+
 ![20240621_163802](https://github.com/blannoy/touchPiano/assets/23641978/795a7c1a-f6b7-4a4b-97fe-8461ed5f65dd)
 
 
