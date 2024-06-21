@@ -27,6 +27,7 @@ web/build
 web/dist
 *.sf2
 instruments/*.js
+data/instruments
 data/static
 data/*.json
 data/*.png
