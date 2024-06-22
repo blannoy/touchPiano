@@ -1,6 +1,10 @@
 # Touch-based floor piano
 
-This project contains the source code to drive a MPR121 & Nodemcu based "floor piano". Wearing socks you should be able to generate key-presses. The sound is played by a connected computer within a browser.
+This project contains the source code to drive a MPR121 & Nodemcu based "floor piano". Wearing socks you should be able to generate key-presses. 
+
+The sound is played by a connected computer within a browser. 
+
+
 ![20240609_182555](https://github.com/blannoy/touchPiano/assets/23641978/8f17ac4f-2ba5-4bd6-ac69-f2d3ead8ca87)
 
 ## Components & material
@@ -66,7 +70,7 @@ A React frontend is used to control the sensor and readout the different JSON-st
 
 You chould be familiar with building and serving a React-based website.
 
-The menu contains:
+The menu (see screenshots in [/screenshots](screenshots/) contains:
 
 - `Play`: a rendition of a piano, selection of instrument and buttons to start the piano with or without sound. The state of the key is also shown.
 - `Thresholds`: set and visualize the thresholds and hits. Easy to setup the piano and debug its sensitivity.
