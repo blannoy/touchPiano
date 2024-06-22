@@ -4,7 +4,8 @@ import { configContext, queryProviderContext } from "../Context/Context";
 import { nrKeys } from '../Containers/Root';
 
 import {
-  LineChart,
+  ComposedChart,
+  Area,
   Line,
   YAxis,
   CartesianGrid,
@@ -203,7 +204,7 @@ function Registers() {
         {start > 0 &&
           <div>
             <div className='section'>
-              <LineChart
+              <ComposedChart
                 width={1024}
                 height={500}
                 data={pausedPlotData}
@@ -242,7 +243,7 @@ function Registers() {
                   dot={false}
                 />
                 <YAxis domain={[0, 2]} yAxisId='touch' orientation='right' type="number" />
-                <Line
+                <Area
                   type="monotone"
                   dataKey={getTouchState}
                   stroke="#0000FF"
@@ -250,8 +251,9 @@ function Registers() {
                   yAxisId='touch'
                   name="touch"
                   dot={false}
+                  fillOpacity={0.3}
                 />
-              </LineChart>
+              </ComposedChart>
             </div>
           </div>}
         <div className='section'>
