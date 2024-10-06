@@ -3,22 +3,26 @@ import asyncio
 import json
 import requests
 import pprint
-from pypiano import Piano
 from threading import Thread
+import pyautogui
+import time
+from pyKey import press
+
 
 baseUrl='http://192.168.0.38'
 baseUrl='http://192.168.4.1'
+endKey=4
 pianoEventsUrl = baseUrl+'/api/piano'
 pianoControl=baseUrl+'/api/pianoState?mode=piano&start='
-pianoNotes=[
-  'C-4', 'C#-4', 'D-4', 'D#-4', 'E-4', 'F-4', 'F#-4', 'G-4', 'G#-4', 'A-4', 'A#-4', 'B-4',
-  'C-5', 'C#-5', 'D-5', 'D#-5', 'E-5', 'F-5', 'F#-5', 'G-5', 'G#-5', 'A-5', 'A#-5', 'B-5'
+pianoKeyboard=[
+  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+  'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x'
 ];
-p = Piano(audio_driver="alsa")
+pyautogui.PAUSE = 0.05
 
-def playNote(key):
-    p.play(pianoNotes[key])
-    
+def playKey(key):
+  #  pyautogui.press(pianoKeyboard[key])
+    press(key=pianoKeyboard[key],sec=0)    
 async def treatEvents():
     print("using ",pianoEventsUrl)
     event_source = sse_client.EventSource(pianoEventsUrl)
@@ -30,18 +34,24 @@ async def treatEvents():
                 for i in range(len(keyHit)):
                 #print("Hit ",i," ",keyHit[i])
                     if (keyHit[i]==True):
-                        print(i)
-                        thread = Thread(target=playNote, args=(i,))
+                        print(pianoKeyboard[i],end=" ")
+                        thread = Thread(target=playKey, args=(i,))
                         thread.start()
+                        thread.join()
+                        if (i==endKey):
+                            print()
+                            print("Piano stopped")
+                            stopPiano=requests.get(pianoControl+"false")
+                            exit()
         except ConnectionError:
             print("Connection error")
         except KeyboardInterrupt:
             await event_source.close()
 
 
-
 startPiano=requests.get(pianoControl+"true")
 pianoResponse=json.loads(startPiano.content)
+
 if (pianoResponse["start"] == True):
     print("Piano started")
 else:
