@@ -43,6 +43,11 @@ export function requestReducer(state, action) {
                 targetState.method = 'get';
                 targetState.params = action.params;
                 break;
+                case 'AVERAGEPERIOD':
+                    targetState.url = '/averagePeriod';
+                    targetState.method = 'get';
+                    targetState.params = action.params;
+                    break;
         default:
             break;
     }

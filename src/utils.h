@@ -1,4 +1,5 @@
 #pragma once
+#include <headers.h>
 
 #define debug_begin(...)         \
   do                             \
@@ -42,16 +43,17 @@ class RunningAverage
   public:
     long total = 0;
     byte readingIndex = 0;
-    long readings[NUMREADINGS];
+    long readings[MAXREADINGS];
+    int numReadings=5;
 
     long getAverage(long value) {
       total = total - readings[readingIndex];
       readings[readingIndex] = value;
       total = total + readings[readingIndex];
       readingIndex = readingIndex + 1;
-      if (readingIndex >= NUMREADINGS) {
+      if (readingIndex >= numReadings) {
         readingIndex = 0;
       }
-      return total / NUMREADINGS;
+      return total / numReadings;
     }
 };

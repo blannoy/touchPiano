@@ -13,7 +13,7 @@ String wifiModeString[2] = {"CLIENT", "AP"};
 
 // Threshold modes
 // STANDARD: "release" determined by increase amount of releaseThreshold above current average 
-// CUSTOM: "release" determined by crossing the point where touch was detected - releaseThreshold 
+// CROSS: "release" determined by crossing the point where touch was detected - releaseThreshold 
 typedef enum { STANDARD, CROSS } ThresholdMode;
 String thresholdModeString[2] = {"STANDARD", "CROSS"};
 #define NUMKEYS 24
@@ -30,6 +30,7 @@ struct Configuration
     WifiMode wifiMode;
     ThresholdMode thresholdMode=CROSS;
     int autoRelease=15000;
+    int averagePeriod=5;
     char apPW[MAXPWSIZE]="calibMpr121";
 };
 

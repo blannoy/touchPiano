@@ -36,6 +36,7 @@ JsonDocument config2JSON(Configuration *conf)
   doc["wifiMode"] = wifiModeString[config.wifiMode];
   doc["thresholdMode"] = thresholdModeString[config.thresholdMode];
   doc["autoRelease"]=config.autoRelease;
+  doc["averagePeriod"]=config.averagePeriod;
   return doc;
 }
 void saveConfiguration(Configuration &conf)
@@ -53,7 +54,6 @@ bool JSON2config(const JsonDocument doc, Configuration *conf, boolean save)
 {
 
   bool validJSON = true;
-  // debug_println(json[F("system")][F("ntp_server")].as<String>());
   for (uint8_t i = 0; i < NUMCONFKEYS; i++)
   {
     if (!doc.containsKey(configKeys[i]))
@@ -111,6 +111,10 @@ bool JSON2config(const JsonDocument doc, Configuration *conf, boolean save)
     {
       config.autoRelease=doc["autoRelease"].as<int>();
     }
+        if (doc.containsKey("averagePeriod"))
+    {
+      config.averagePeriod=doc["averagePeriod"].as<int>();
+    }
   }
   else
   {
@@ -145,8 +149,6 @@ void loadConfiguration(Configuration *conf)
     configFile.close();
     if (!deserializeError)
     {
-      // serializeJson(json,Serial);
-      // serializeJsonPretty(json, Serial);
       validJSON = true;
       JSON2config(json, conf, false);
       if (json.containsKey("APPW"))
@@ -172,10 +174,8 @@ void loadConfiguration(Configuration *conf)
   {
     debug_println(F("Invalid JSON"));
     Serial.println(F("Invalid JSON"));
-    // loadDefaultConfiguration();
   }
 
-  // copyConfig(config, oldConfig);
 }
 
 void configurationSetup()

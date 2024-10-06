@@ -12,11 +12,13 @@ export default function Admin() {
   const navigate = useNavigate();
   const [waitReboot,setWaitReboot]=useState(false);
   const [autoReleaseTiming,setAutoReleaseTiming]=useState(60000);
+  const [averagePeriod,setAveragePeriod]=useState(5);
 
   useEffect(() => {
     if (config !== null && config !== undefined) {
       setWifiMode(config.wifiMode);
       setAutoReleaseTiming(config.autoRelease);
+      setAveragePeriod(config.averagePeriod);
     }
   }, [config])
   function goHome(){ 
@@ -67,6 +69,13 @@ goHome();
   function sendAutoRelease(e){
     dispatchRequest({ type: 'AUTORELEASE', params: { 'value': autoReleaseTiming} });
   }
+  function changeAveragePeriod(e) {
+    setAveragePeriod(e.target.value);
+  }
+
+  function sendAveragePeriod(e){
+    dispatchRequest({ type: 'AVERAGEPERIOD', params: { 'value': averagePeriod} });
+  }
 
   return (
     <div>
@@ -82,6 +91,11 @@ goHome();
         <label>Autorelease key after (in ms)</label>
         <input type="number" min="0" max="60000" id="autoRelease" value={autoReleaseTiming} onChange={changeAutoRelease}></input>
         <button type="submit" id="setautorelease" onClick={sendAutoRelease}>Set autorelease timing</button>
+      </div>
+      <div className='section'>
+        <label>Number values for moving average</label>
+        <input type="number" min="1" max="20" id="averagePeriod" value={averagePeriod} onChange={changeAveragePeriod}></input>
+        <button type="submit" id="setautorelease" onClick={sendAveragePeriod}>Set period</button>
       </div>
       <div className='section'>
         Device will reboot after change in wifi settings.

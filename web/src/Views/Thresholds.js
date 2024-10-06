@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { configContext, queryProviderContext } from "../Context/Context";
 import { nrKeys } from '../Containers/Root.js';
-import InputNumber from '../Components/InputNumber.tsx';
+import InputNumber from '../Components/InputNumber.js';
 
 import {
   LineChart,
+  ComposedChart,
+  Area,
   Line,
   YAxis,
   CartesianGrid,
@@ -20,7 +22,7 @@ function Thresholds() {
   const [start, setStart] = useState(false);
   const [plotData, setPlotData] = useState([]);
   const [pausedPlotData, setPausedPlotData] = useState([]);
-  const [selectedPin, setSelectedPin] = useState(2);
+  const [selectedPin, setSelectedPin] = useState(0);
   const [touchAll, setTouchAll] = useState(25);
   const [releaseAll, setReleaseAll] = useState(12);
   const [touchThreshold, setTouchThreshold] = useState([]);
@@ -166,7 +168,7 @@ function Thresholds() {
         {start > 0 &&
           <div>
             <div className='section'>
-              <LineChart
+              <ComposedChart
                 width={1024}
                 height={500}
                 data={pausedPlotData}
@@ -185,9 +187,11 @@ function Thresholds() {
                 {/* <YAxis/> domain={[minVal, maxVal]} /> */}
                 <YAxis domain={['dataMin-10', 'dataMax+10']} type="number" allowDataOverflow={true} />
                 <Tooltip />
+                <Legend verticalAlign="top" height={36}/>
                 <Line
                   type="monotone"
                   dataKey={getAveraged}
+                  name="average"
                   stroke="#FF0000"
                   dot={false}
                   activeDot={{ r: 5 }}
@@ -205,25 +209,29 @@ function Thresholds() {
                   type="monotone"
                   dataKey={getTouchLimit}
                   stroke="#E87719"
+                  name="touch threshold"
                   dot={false}
                   strokeWidth="2"
                 />
                 <Line
                   type="monotone"
                   dataKey={getReleaseLimit}
+                  name="release threshold"
                   stroke="#19E5E8"
                   dot={false}
 
                   strokeWidth="2"
                 />
                 <YAxis domain={[0, 2]} yAxisId='touch' orientation='right' type="number" />
-                <Line
+                <Area
                   type="monotone"
                   dataKey={getTouchState}
+                  name="touch"
                   stroke="#0000FF"
                   strokeWidth="1"
                   dot={false}
                   yAxisId='touch'
+                  fillOpacity="0.3"
                 />
                 {/* <Line
                   type="monotone"
@@ -232,7 +240,7 @@ function Thresholds() {
                   strokeWidth="1"
                   yAxisId='touch'
                 /> */}
-              </LineChart>
+              </ComposedChart>
             </div>
           </div>}
         {touchThreshold !== undefined && touchThreshold.length > 0 && <div>
