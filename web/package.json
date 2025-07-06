@@ -21,9 +21,9 @@
     "standardized-audio-context": "^25.3.72"
   },
   "scripts": {
-    "start": "env-cmd -f .env.dev react-scripts start",
-    "start:acc": "env-cmd -f .env.acc react-scripts start",
-    "start:production": "env-cmd -f .env.prod react-scripts start",
+    "start": "env-cmd -f .env.local react-scripts start",
+    "start:acc": "env-cmd -f .env.start react-scripts start",
+    "image": "env-cmd -f .env.image react-scripts build && copy ..\\config\\config.json ..\\data",
     "build": "scripts\\build.cmd dev",
     "build:production": "scripts\\build.cmd prod",
     "build:local": "scripts\\build.cmd local",

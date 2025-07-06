@@ -174,8 +174,10 @@ function Thresholds() {
         <div className='section'>
 
           <button type="submit" id="set" onClick={setThresholds}>SET</button>
-          <button type="submit" id="start" onClick={toggleStart}>{(start ? "STOP" : "START")}</button>
-          <label>Selected pin: </label>{selectedPin}
+          <button type="submit" id="start" onClick={toggleStart}>{(start ? "STOP" : "START")}</button>  
+<select id="pin" name="pin" onChange={changePin} value={selectedPin}>
+            {Array.from({ length: nrKeys }).map((it, index) => <option key={index} value={index}>Pin {index}</option>)}
+          </select>
         </div>
         {start > 0 &&
           <div>

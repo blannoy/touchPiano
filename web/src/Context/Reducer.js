@@ -33,14 +33,11 @@ export function requestReducer(state, action) {
             }
             targetState.params = action.params;
             break;
-<<<<<<< HEAD
         case 'THRESHOLDMODE':
             targetState.url = '/thresholdMode';
             targetState.method = 'get';
             targetState.params = action.params;
             break;
-=======
->>>>>>> c893b933f29e92fc42aefb8107d2b4347546aeb5
         case 'MODE':
             targetState.url = '/pianoState';
             targetState.method = 'get';
@@ -56,13 +53,6 @@ export function requestReducer(state, action) {
             targetState.method = 'get';
             targetState.params = action.params;
             break;
-<<<<<<< HEAD
-=======
-        case 'THRESHOLDMODE':
-            targetState.url = '/thresholdMode';
-            targetState.method = 'get';
-            targetState.params = action.params;
->>>>>>> c893b933f29e92fc42aefb8107d2b4347546aeb5
         default:
             break;
     }
