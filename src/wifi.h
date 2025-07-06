@@ -13,7 +13,7 @@ void APModeCallback(WiFiManager *myWiFiManager)
 void wifiManagerSetup()
 {
   wifiManager.setAPCallback(APModeCallback);
-  wifiManager.setConnectTimeout(180);
+  wifiManager.setConnectTimeout(20);
 
   WiFi.mode(WIFI_STA);
   wifiManager.setShowStaticFields(true);

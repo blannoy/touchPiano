@@ -18,36 +18,41 @@ export function requestReducer(state, action) {
         case 'LOADCONFIG':
             targetState.url = '/config';
             targetState.method = 'get';
-            targetState.params={};
+            targetState.params = {};
             break;
-            case 'WIFIMODE':
-                targetState.url = '/wifiMode';
-                targetState.method = 'get';
-                targetState.params=action.params;                
-                break;
+        case 'WIFIMODE':
+            targetState.url = '/wifiMode';
+            targetState.method = 'get';
+            targetState.params = action.params;
+            break;
         case 'SETCONFIG':
-                targetState.url = '/setReg';
-                targetState.method = action.method;
-                if (action.method ==='post'){
-                    targetState.data = action.body;
-                }
-                targetState.params=action.params;
-                break;
+            targetState.url = '/setReg';
+            targetState.method = action.method;
+            if (action.method === 'post') {
+                targetState.data = action.body;
+            }
+            targetState.params = action.params;
+            break;
+        case 'THRESHOLDMODE':
+            targetState.url = '/thresholdMode';
+            targetState.method = 'get';
+            targetState.params = action.params;
+            break;
         case 'MODE':
             targetState.url = '/pianoState';
             targetState.method = 'get';
             targetState.params = action.params;
             break;
-            case 'AUTORELEASE':
-                targetState.url = '/autoRelease';
-                targetState.method = 'get';
-                targetState.params = action.params;
-                break;
-                case 'AVERAGEPERIOD':
-                    targetState.url = '/averagePeriod';
-                    targetState.method = 'get';
-                    targetState.params = action.params;
-                    break;
+        case 'AUTORELEASE':
+            targetState.url = '/autoRelease';
+            targetState.method = 'get';
+            targetState.params = action.params;
+            break;
+        case 'AVERAGEPERIOD':
+            targetState.url = '/averagePeriod';
+            targetState.method = 'get';
+            targetState.params = action.params;
+            break;
         default:
             break;
     }

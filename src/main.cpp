@@ -129,8 +129,8 @@ void sensorLoop()
       }
       else if (runMode == "thresholds")
       {
-        averagedDataArray[keyNr] = value;
-        filteredDataArray[keyNr] = currentAvg;
+        filteredDataArray[keyNr] = value;
+        averagedDataArray[keyNr] = currentAvg;
         releaseDataArray[keyNr] = thresholdCrossed[sensorNr][i] - config.customReleaseThreshold[keyNr];
         keyState[keyNr] = (bitRead(avgCurrTouched[sensorNr], i)>0);
         keyHit[keyNr] = (bitRead(avgCurrTouched[sensorNr] ,i)>0) && !(bitRead(avgLastTouched[sensorNr],i)>0);

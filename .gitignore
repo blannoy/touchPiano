@@ -23,5 +23,7 @@ web/coverage
 web/build/instruments/*.js
 *.sf2
 instruments/*.js
+web/build
 
 
+.codegpt

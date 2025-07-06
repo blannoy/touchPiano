@@ -1,0 +1,22 @@
+*Pick And Place List
+*Company=
+*Author=
+*eMail=
+*
+*Project=piano
+*Date=20:09:40
+*CreatedBy=Fritzing 0.9.10b.2022-05-14.CD-1801-0-29c2cede
+*
+*
+*Coordinates in mm, always center of component
+*Origin 0/0=Lower left corner of PCB
+*Rotation in degree (0-360, math. pos.)
+*
+*No;Value;Package;X;Y;Rotation;Side;Name
+1;;;61.4459;-38.052;0;Bottom;MPR121_2
+2;;;43.6155;-14.5887;-90;Bottom;Nodemcu
+3;;THT;15.7259;-53.927;90;Bottom;J2
+4;;THT;51.2859;-53.927;90;Bottom;J4
+5;;THT;33.5059;-53.927;90;Bottom;J1
+6;;THT;69.0659;-53.927;90;Bottom;J3
+7;;;23.3459;-38.052;0;Bottom;MPR121_1

@@ -148,10 +148,12 @@ void setWifiMode(AsyncWebServerRequest *request)
     AsyncWebParameter *p = request->getParam("mode");
     if (p->value().equalsIgnoreCase("CLIENT"))
     {
+      Serial.println("Switching wifi mode to CLIENT");
       config.wifiMode = CLIENT;
     }
     else if (p->value().equalsIgnoreCase("AP"))
     {
+      Serial.println("Switching wifi mode to AP");
       if (request->hasParam("PW")){
             AsyncWebParameter *pw = request->getParam("PW");
         config.wifiMode = AP;
@@ -164,7 +166,15 @@ void setWifiMode(AsyncWebServerRequest *request)
     }
     else if (p->value().equalsIgnoreCase("RESET"))
     {
-      wifiManager.resetSettings();
+      Serial.println("RESET wifi");
+  //    WiFi.disconnect(false,true);
+  //    wifiManager.disconnect();
+  //    wifiManager.autoConnect();
+   //   wifiManager.resetSettings();
+      Serial.println("Restarting");
+            ESP.eraseConfig();
+      delay(2000);
+      ESP.restart();
     }
   }
   saveConfiguration(config);
@@ -179,13 +189,15 @@ void setState(AsyncWebServerRequest *request)
   {
     AsyncWebParameter *p = request->getParam("mode");
     runMode = p->value();
+
   }
   if (request->hasParam("start"))
   {
     AsyncWebParameter *p = request->getParam("start");
     startSensor = p->value().equalsIgnoreCase("true");
   }
-  saveAndGetConfig(request);
+  getConfig(request);
+   // saveAndGetConfig(request);
 }
 
 void setThresholdMode(AsyncWebServerRequest *request)

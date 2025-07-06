@@ -19,6 +19,7 @@ export default function Admin() {
       setWifiMode(config.wifiMode);
       setAutoReleaseTiming(config.autoRelease);
       setAveragePeriod(config.averagePeriod);
+      setThreshMode(config.thresholdMode);
     }
   }, [config])
   function goHome(){ 

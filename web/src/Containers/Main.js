@@ -9,6 +9,7 @@ import Play from "../Views/Play";
 import Registers from "../Views/Registers";
 import Thresholds from "../Views/Thresholds";
 import Admin from "../Views/Admin";
+import Test from "../Views/Test";
 
 export default function Main() {
   
@@ -28,6 +29,7 @@ export default function Main() {
             <Route path="/Thresholds" element={<Thresholds/>}/>
             <Route path="/Registers" element={<Registers/>}/>
             <Route path="/Admin" element={<Admin/>}/>
+            <Route path="/Test" element={<Test/>}/>
             </Routes>
           </div>
         </div>
