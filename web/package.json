@@ -21,50 +21,14 @@
     "standardized-audio-context": "^25.3.72"
   },
   "scripts": {
-    "prestart": "copy-files-from-to --mode=start",
-    "start": "env-cmd -f .env.start react-scripts start",
-    "image": "env-cmd -f .env.image react-scripts build && gzip ../data/static/js/*.js && del-cli -f ../data/static/js/*.js ",
-    "local": "env-cmd -f .env.local react-scripts build",
-    "postlocal": "copy-files-from-to --mode=local",
-    "postimage": "copy-files-from-to --mode=image"
-  },
-  "copyFiles": [
-    {
-      "from": "../config/config.json",
-      "to": {
-        "default": {
-          "skip": true
-        },
-        "image": "../data/"
-      }
-    },
-    {
-      "from": "../instruments/instruments.json",
-      "to": {
-        "default": {
-          "skip": true
-        },
-        "image": "../data/instruments/",
-        "start": "public/instruments/"
-      }
-    },
-    {
-      "from": {
-        "default": {
-          "skip": true
-        },
-        "local": "../instruments/**"
-      },
-      "to": {
-        "default": {
-          "skip": true
-        },
-        "local": "build/instruments/"
-      }
-    }
-  ],
-  "copyFilesSettings": {
-    "whenFileExists": "overwrite"
+    "start": "env-cmd -f .env.dev react-scripts start",
+    "start:acc": "env-cmd -f .env.acc react-scripts start",
+    "start:production": "env-cmd -f .env.prod react-scripts start",
+    "build": "scripts\\build.cmd dev",
+    "build:production": "scripts\\build.cmd prod",
+    "build:local": "scripts\\build.cmd local",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
